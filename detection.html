@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Live Human Detection</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        .live-container {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .camera-wrapper {
+            background: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .camera-wrapper img {
+            width: 100%;
+            max-width: 1000px;
+            display: block;
+            margin: auto;
+        }
+
+        .live-status {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .back-button:hover {
+            background: #1d4ed8;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="sidebar">
+
+        <h2>HDMS</h2>
+
+        <p class="menu-title">MENU</p>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/live" class="active">
+            Live Detection
+        </a>
+
+        <a href="#">
+            Detection History
+        </a>
+
+        <a href="{{ url_for('reports') }}">
+             📈 Reports
+        </a>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>Live Human Detection</h1>
+
+                <p>
+                    Real-time YOLO human detection
+                </p>
+
+            </div>
+
+            <div class="status">
+                ● AI System Online
+            </div>
+
+        </div>
+
+
+        <div class="live-container">
+
+            <h2>
+                Camera Feed
+            </h2>
+
+            <span class="live-status">
+                ● LIVE
+            </span>
+
+
+            <div class="camera-wrapper">
+
+                <img
+                    src="{{ url_for('video_feed') }}"
+                    alt="Live Human Detection"
+                >
+
+            </div>
+
+
+            <a
+                href="/"
+                class="back-button"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

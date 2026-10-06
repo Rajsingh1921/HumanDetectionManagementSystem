@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Login - HDMS</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                HD
+            </div>
+
+            <h1>
+                Human Detection
+            </h1>
+
+            <p class="login-subtitle">
+                Management System
+            </p>
+
+
+            {% if error %}
+
+            <div class="login-error">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="{{ url_for('login') }}"
+            >
+
+                <div class="login-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="login-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+                    Login
+
+                </button>
+
+            </form>
+
+
+            <div class="login-footer">
+
+                <span>
+                    HDMS Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

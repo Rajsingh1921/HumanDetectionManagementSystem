@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Detection History - HDMS</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">HD</div>
+
+            <div>
+                <h2>HDMS</h2>
+                <span>Human Detection</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+           
+            <a href="{{ url_for('logout') }}" class="logout-button">
+                  Logout
+            </a>
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('live') }}">
+                📹 Live Detection
+            </a>
+
+            <a href="{{ url_for('history') }}"
+               class="active">
+                📊 Detection History
+            </a>
+
+            <a href="#">
+                📈 Reports
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            Human Detection<br>
+            Management System
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="top-header">
+
+            <div>
+                <h1>Detection History</h1>
+
+                <p>
+                    View and manage all recorded human detections
+                </p>
+            </div>
+
+            <div class="header-badge">
+                {{ total_records }} Records
+            </div>
+
+        </div>
+
+
+        <!-- FILTER SECTION -->
+
+        <div class="history-filter">
+
+            <form method="GET"
+                  action="{{ url_for('history') }}"
+                  class="filter-form">
+
+                <div class="filter-group">
+
+                    <label for="search">
+                        Search Camera
+                    </label>
+
+                    <input
+                        type="text"
+                        id="search"
+                        name="search"
+                        placeholder="MacBook Camera"
+                        value="{{ search }}"
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="date">
+                        Detection Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value="{{ selected_date }}"
+                    >
+
+                </div>
+
+
+                <button type="submit"
+                        class="filter-button">
+
+                    🔍 Search
+
+                </button>
+
+
+                <a href="{{ url_for('history') }}"
+                   class="clear-button">
+
+                    Clear
+
+                </a>
+
+            </form>
+
+        </div>
+
+
+        <!-- HISTORY TABLE -->
+
+        <div class="history-card">
+
+            <div class="history-card-header">
+
+                <div>
+                    <h2>Detection Records</h2>
+
+                    <p>
+                        Showing recorded detection events
+                    </p>
+                </div>
+
+            </div>
+
+
+            {% if detections %}
+
+            <div class="table-wrapper">
+
+                <table class="history-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Date</th>
+
+                            <th>Time</th>
+
+                            <th>People Count</th>
+
+                            <th>Camera Source</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for detection in detections %}
+
+                        <tr>
+
+                            <td>
+                                #{{ detection.id }}
+                            </td>
+
+                            <td>
+                                {{ detection.detection_date }}
+                            </td>
+
+                            <td>
+                                {{ detection.detection_time }}
+                            </td>
+
+                            <td>
+
+                                <span class="people-badge">
+
+                                    👤
+                                    {{ detection.people_count }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="camera-source">
+
+                                    📷
+                                    {{ detection.camera_source }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for('delete_detection', detection_id=detection.id) }}"
+                                    onsubmit="return confirm('Are you sure you want to delete this detection?');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="delete-button">
+
+                                        🗑️ Delete
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            {% if total_pages > 1 %}
+
+            <div class="pagination">
+
+                {% if page > 1 %}
+
+                    <a
+                        href="{{ url_for(
+                            'history',
+                            search=search,
+                            date=selected_date,
+                            page=page-1
+                        ) }}"
+                        class="page-button"
+                    >
+                        ← Previous
+                    </a>
+
+                {% endif %}
+
+
+                <span class="page-info">
+
+                    Page {{ page }} of {{ total_pages }}
+
+                </span>
+
+
+                {% if page < total_pages %}
+
+                    <a
+                        href="{{ url_for(
+                            'history',
+                            search=search,
+                            date=selected_date,
+                            page=page+1
+                        ) }}"
+                        class="page-button"
+                    >
+                        Next →
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+
+            {% else %}
+
+                <div class="no-records">
+
+                    <div class="no-records-icon">
+                        📭
+                    </div>
+
+                    <h3>No Detection Records</h3>
+
+                    <p>
+                        No detection records match your search.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

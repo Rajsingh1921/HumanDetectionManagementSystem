@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Human Detection Management System</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>HDMS</h2>
+        <a href="{{ url_for('logout') }}" class="logout-button">
+           Logout
+        </a>
+
+        <p class="menu-title">MENU</p>
+
+        <a href="/" class="active">
+            Dashboard
+        </a>
+
+       <a href="{{ url_for('live') }}">
+        📹 Live Detection
+       </a>
+
+        <a href="{{ url_for('history') }}">
+         📊 Detection History
+        </a>
+
+       <a href="{{ url_for('reports') }}">
+        📈 Reports
+       </a>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Human Detection</h1>
+                <p>Management System Dashboard</p>
+            </div>
+
+            <div class="status">
+                ● System Online
+            </div>
+
+        </div>
+
+
+        <!-- Statistics -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Total Detections</h3>
+
+                <div class="number">
+                    {{ total_detections }}
+                </div>
+
+                <p>All recorded detections</p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Today's Detections</h3>
+
+                <div class="number">
+                    {{ today_detections }}
+                </div>
+
+                <p>Detected today</p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Total People</h3>
+
+                <div class="number">
+                    {{ total_people }}
+                </div>
+
+                <p>Total people detected</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Detection History -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>Recent Detections</h2>
+
+                <span>
+                    Last 10 records
+                </span>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Date</th>
+
+                        <th>Time</th>
+
+                        <th>People</th>
+
+                        <th>Camera</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for detection in detections %}
+
+                    <tr>
+
+                        <td>
+                            {{ detection.id }}
+                        </td>
+
+                        <td>
+                            {{ detection.detection_date }}
+                        </td>
+
+                        <td>
+                            {{ detection.detection_time }}
+                        </td>
+
+                        <td>
+
+                            <span class="badge">
+                                {{ detection.people_count }}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ detection.camera_source }}
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+                            No detection records found.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
